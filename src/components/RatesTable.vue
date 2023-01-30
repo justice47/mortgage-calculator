@@ -52,7 +52,6 @@
 
 <style lang="scss" module>
   .ratesTable {
-    display: grid;
     text-align: left;
     row-gap: 8px;
     background-color: #ffffff;

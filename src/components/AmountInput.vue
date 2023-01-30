@@ -11,17 +11,6 @@
 
   const emits = defineEmits<(eventName: 'update:modelValue', value: number) => void>();
 
-  const amountInputOptions = {
-    currency: 'EUR',
-    precision: 0,
-    valueRange: {
-      min: 10000,
-      max: 100000000
-    },
-    currencyDisplay: CurrencyDisplay.hidden,
-    hideGroupingSeparatorOnFocus: false
-  }
-
   const amount = ref(props.modelValue)
 
   watch(amount, () : void => {
@@ -33,10 +22,7 @@
   <div :class="$style.inputBox">
     <span :class="$style.prefix">€</span>
 
-    <NumberInput
-      v-model.lazy="amount"
-      :options="amountInputOptions"
-    />
+    <NumberInput v-model.lazy="amount" />
   </div>
 </template>
 

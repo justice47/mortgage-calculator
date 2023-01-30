@@ -68,7 +68,7 @@
     } else return ''
   })
 
-  const { result, variables, load } = useLazyQuery(gql`
+  const { result, variables, load, loading } = useLazyQuery(gql`
     query ratesTable($propetyPrice: Float!, $repayment: Float!, $loanAmount: Float!) {
       root {
         rates_table(
@@ -89,14 +89,20 @@
     estateHasComission.value = selectValue;
   }
 
-  const calculateHandler = () : void => {
-    variables.value = {
-      propetyPrice: propertyPrice.value,
-      repayment: repaymentRatePercentage.value,
-      loanAmount: impliedLoan.value
-    }
+  const calculateHandler = async () : Promise<void> => {
+    try {
+      if (loading.value !== true) {
+        variables.value = {
+          propetyPrice: propertyPrice.value,
+          repayment: repaymentRatePercentage.value,
+          loanAmount: impliedLoan.value
+        }
 
-    load()
+        await load()
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 </script>
 
@@ -146,7 +152,10 @@
           <HorizontalDivider />
 
           <div :class="$style.controls">
-            <DefaultButton @click="calculateHandler">
+            <DefaultButton
+              :is-loading="loading"
+              @click="calculateHandler"
+            >
               Calculate
             </DefaultButton>
           </div>
